@@ -1,0 +1,97 @@
+name: Build and publish Sileo repo
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Arrange files (lets the repo be uploaded flat from a phone)
+        run: |
+          P=layout/Library/PreferenceLoader/Preferences
+          mkdir -p "$P" web
+          if [ -f prefs.plist ]; then mv prefs.plist "$P/LiquidGlassRewind.plist"; fi
+          for f in LiquidGlassRewind*.png; do
+            if [ -f "$f" ]; then mv "$f" "$P/"; fi
+          done
+          if [ -f index.html ]; then mv index.html web/index.html; fi
+          find . -path ./.git -prune -o -type f -print | sort
+
+      - name: Install Theos and tools
+        run: |
+          brew install ldid xz dpkg
+          git clone --recursive --depth 1 https://github.com/theos/theos.git "$HOME/theos"
+          echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
+
+      - name: Build .deb
+        run: make package FINALPACKAGE=1
+
+      - name: Build apt repo (Packages, Release)
+        run: |
+          set -e
+          rm -rf site
+          mkdir -p site/debs
+          cp packages/*.deb site/debs/
+          cp web/index.html site/index.html
+          cd site
+          dpkg-scanpackages -m debs > Packages
+          gzip -k -9 Packages
+          bzip2 -k -9 Packages
+          xz -k -9 Packages
+          {
+            echo "Origin: es.jd's Repo"
+            echo "Label: es.jd's Repo"
+            echo "Suite: stable"
+            echo "Version: 1.0"
+            echo "Codename: ios"
+            echo "Architectures: iphoneos-arm"
+            echo "Components: main"
+            echo "Description: Tweaks by es.jd"
+            echo "MD5Sum:"
+            for f in Packages Packages.gz Packages.bz2 Packages.xz; do
+              printf " %s %s %s\n" "$(md5 -q "$f")" "$(wc -c < "$f" | tr -d ' ')" "$f"
+            done
+            echo "SHA256:"
+            for f in Packages Packages.gz Packages.bz2 Packages.xz; do
+              printf " %s %s %s\n" "$(shasum -a 256 "$f" | cut -d' ' -f1)" "$(wc -c < "$f" | tr -d ' ')" "$f"
+            done
+          } > Release
+          ls -la . debs
+          cat Packages
+
+      - name: Keep the .deb as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: packages/*.deb
+
+      - name: Upload site for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
