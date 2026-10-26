@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>entry</key>
+	<dict>
+		<key>cell</key>
+		<string>PSLinkCell</string>
+		<key>detail</key>
+		<string>PSListController</string>
+		<key>icon</key>
+		<string>LiquidGlassRewind.png</string>
+		<key>label</key>
+		<string>LiquidGlassRewind</string>
+	</dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Clear  ◂  ▸  Tinted</string>
+			<key>footerText</key>
+			<string>Clear is more transparent and tinted increases opacity, adding contrast to content and controls.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>0.4</real>
+			<key>defaults</key>
+			<string>com.lucid.liquidglass12</string>
+			<key>key</key>
+			<string>clearness</string>
+			<key>min</key>
+			<real>0</real>
+			<key>max</key>
+			<real>1</real>
+			<key>showValue</key>
+			<false/>
+			<key>PostNotification</key>
+			<string>com.lucid.liquidglass12/prefsChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Where to use it</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.lucid.liquidglass12</string>
+			<key>key</key>
+			<string>dockEnabled</string>
+			<key>label</key>
+			<string>Dock</string>
+			<key>PostNotification</key>
+			<string>com.lucid.liquidglass12/prefsChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.lucid.liquidglass12</string>
+			<key>key</key>
+			<string>ccEnabled</string>
+			<key>label</key>
+			<string>Control Center</string>
+			<key>PostNotification</key>
+			<string>com.lucid.liquidglass12/prefsChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Advanced</string>
+			<key>footerText</key>
+			<string>Full Blur on Tiles is prettier but heavier on older devices. Turn on Compatibility Blur if the dock shows no blur.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.lucid.liquidglass12</string>
+			<key>key</key>
+			<string>ccBackdrop</string>
+			<key>label</key>
+			<string>Full Blur on Tiles</string>
+			<key>PostNotification</key>
+			<string>com.lucid.liquidglass12/prefsChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.lucid.liquidglass12</string>
+			<key>key</key>
+			<string>compatBlur</string>
+			<key>label</key>
+			<string>Compatibility Blur</string>
+			<key>PostNotification</key>
+			<string>com.lucid.liquidglass12/prefsChanged</string>
+		</dict>
+	</array>
+</dict>
+</plist>

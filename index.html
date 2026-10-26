@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>es.jd's Repo</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    color: #fff;
+    background: radial-gradient(1200px 700px at 20% 10%, #6a8dff 0%, transparent 60%),
+                radial-gradient(900px 600px at 90% 90%, #ff7ad9 0%, transparent 55%),
+                #1b1f3a;
+  }
+  .card {
+    width: 100%; max-width: 440px; padding: 28px; border-radius: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.08));
+    border: 1px solid rgba(255,255,255,.45);
+    box-shadow: 0 12px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8); backdrop-filter: blur(24px) saturate(1.8);
+  }
+  h1 { margin: 0 0 4px; font-size: 26px; }
+  p { margin: 0 0 18px; opacity: .85; }
+  .url {
+    display: block; width: 100%; padding: 12px 14px; margin-bottom: 14px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.35); background: rgba(0,0,0,.25); color: #fff;
+    font: 14px ui-monospace, Menlo, monospace; word-break: break-all;
+  }
+  .btn {
+    display: block; text-align: center; text-decoration: none; color: #fff; font-weight: 600;
+    padding: 13px; margin-bottom: 10px; border-radius: 14px; cursor: pointer; border: 0; width: 100%;
+    font-size: 16px; background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.4);
+  }
+  .btn.primary { background: rgba(255,255,255,.9); color: #1b1f3a; }
+  .pkg { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.25); }
+  .pkg b { display: block; font-size: 17px; }
+  small { opacity: .75; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>es.jd's Repo</h1>
+    <p>Add this repo to your package manager to install my tweaks.</p>
+
+    <code class="url" id="url"></code>
+
+    <a class="btn primary" id="sileo">Add to Sileo</a>
+    <a class="btn" id="zebra">Add to Zebra</a>
+    <a class="btn" id="cydia">Add to Cydia</a>
+    <button class="btn" id="copy">Copy repo URL</button>
+
+    <div class="pkg">
+      <b>LiquidGlassRewind</b>
+      <small>iOS 27 Liquid Glass look for the Dock and Control Center. iOS 12.x, arm64.</small>
+    </div>
+  </div>
+
+<script>
+  var repo = location.origin + location.pathname.replace(/[^\/]*$/, "");
+  document.getElementById("url").textContent = repo;
+  document.getElementById("sileo").href = "sileo://source/" + repo;
+  document.getElementById("zebra").href = "zbra://sources/add/" + repo;
+  document.getElementById("cydia").href = "cydia://url/https://cydia.saurik.com/api/share#?source=" + repo;
+  document.getElementById("copy").onclick = function () {
+    var b = this;
+    function done() { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy repo URL"; }, 1500); }
+    if (navigator.clipboard) { navigator.clipboard.writeText(repo).then(done); }
+    else { var r = document.createRange(); r.selectNode(document.getElementById("url")); getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand("copy"); done(); }
+  };
+</script>
+</body>
+</html>
