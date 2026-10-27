@@ -1,0 +1,11 @@
+Package: com.es.jd.liquidglassrewind
+Name: LiquidGlassRewind
+Depends: mobilesubstrate, preferenceloader, firmware (>= 12.0), firmware (<< 13.0)
+Version: 1.5.0
+Architecture: iphoneos-arm
+Conflicts: com.lucid.liquidglass12
+Replaces: com.lucid.liquidglass12
+Description: iOS 27 "Liquid Glass" look for the Dock and Control Center
+Maintainer: es.jd
+Author: es.jd
+Section: Tweaks
